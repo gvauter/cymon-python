@@ -67,3 +67,23 @@ api.ip_domains('185.27.134.165')
 + domain_lookup()
 + domain_blacklist()
 + url_lookup()
+
+## Paginators
+
+Paginators can be used to abstract the process of iterating over truncated API results.  The get_paginator() method takes the method name (see Available methods above) and returns a Paginator object.  
+
+The paginate() method of the Paginator takes in any arguments accepted by the Cymon method and returns an iterator.
+
+Example:
+
+```
+from cymon import Cymon
+
+cymon = Cymon()
+paginator = cymon.get_paginator('ip_blacklist')
+
+pages = paginator.paginate('botnet', days=2)
+for page in pages:
+    for item in page:
+        print item['addr']
+```
