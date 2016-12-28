@@ -39,7 +39,7 @@ class Cymon(object):
         """
         Basic check to raise exception when method cannot paginate.
         """
-        if method in ['ip_events', 'ip_events', 'ip_urls', 'ip_blacklist']:
+        if method in ['ip_blacklist', 'domain_blacklist']:
             return True
         else:
             return False
@@ -93,11 +93,14 @@ class Paginator(object):
         Use Cymon client object to make recursive API calls when
             result is paginated.
         """
+        has_next = False
         method_to_call = getattr(self.cymon, self.method)
-        result = method_to_call(*args, **kwargs)
+        result = method_to_call(limit=100, *args, **kwargs)
         if result['next'] is not None:
+            print result['next']
             has_next = True
         yield result['results'] # intial API call to start recursion
+
         while has_next:
             resp = requests.get(result['next'])
             result = json.loads(resp.text)
