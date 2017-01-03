@@ -97,7 +97,6 @@ class Paginator(object):
         method_to_call = getattr(self.cymon, self.method)
         result = method_to_call(limit=100, *args, **kwargs)
         if result['next'] is not None:
-            print result['next']
             has_next = True
         yield result['results'] # intial API call to start recursion
 
